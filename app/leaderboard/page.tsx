@@ -20,11 +20,7 @@ export default function LeaderboardPage() {
 
   const fetchLeaderboard = async () => {
     try {
-      const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-      if (!url) {
-        setLoading(false)
-        return
-      }
+      const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbyttyY5F_fcg0F61R9RjKVlnallOhXBkc8Y32nGTcVbxj4wvNzeyuo80DbIrh2cuYPo/exec"
       const res = await fetch(url)
       const json = await res.json()
       if (json.success && json.data) {

@@ -17,10 +17,7 @@ export default function ProposalForm() {
     setIsSubmitting(true)
 
     try {
-      const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-      if (!url || url === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-        throw new Error("Google Script URL not configured")
-      }
+      const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbyttyY5F_fcg0F61R9RjKVlnallOhXBkc8Y32nGTcVbxj4wvNzeyuo80DbIrh2cuYPo/exec"
 
       const now = new Date()
       const date = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`
