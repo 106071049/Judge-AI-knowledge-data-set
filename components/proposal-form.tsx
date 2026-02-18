@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Send } from "lucide-react"
+import LoadingOverlay from "@/components/loading-overlay"
 
 export default function ProposalForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -46,6 +47,8 @@ export default function ProposalForm() {
   }
 
   return (
+    <>
+    {isSubmitting && <LoadingOverlay />}
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Proposer Name */}
       <div className="space-y-2">
@@ -176,5 +179,6 @@ export default function ProposalForm() {
         </button>
       </div>
     </form>
+    </>
   )
 }

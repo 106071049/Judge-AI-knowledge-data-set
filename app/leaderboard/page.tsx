@@ -4,10 +4,12 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, Crown, Trophy, Medal } from "lucide-react"
 import AiBackground from "@/components/ai-background"
+import LoadingOverlay from "@/components/loading-overlay"
 
 interface LeaderboardEntry {
   name: string
   count: number
+  itemSum: number
 }
 
 export default function LeaderboardPage() {
@@ -24,18 +26,20 @@ export default function LeaderboardPage() {
       const res = await fetch(url)
       const json = await res.json()
       if (json.success && json.data) {
-        // Count submissions per proposer (English name)
-        const counts: Record<string, number> = {}
-        json.data.forEach((row: { proposer: string }) => {
+        // Count submissions and sum itemNumbers per proposer
+        const stats: Record<string, { count: number; itemSum: number }> = {}
+        json.data.forEach((row: { proposer: string; itemNumber: number }) => {
           const name = row.proposer.trim()
           if (name) {
-            counts[name] = (counts[name] || 0) + 1
+            if (!stats[name]) stats[name] = { count: 0, itemSum: 0 }
+            stats[name].count += 1
+            stats[name].itemSum += Number(row.itemNumber) || 0
           }
         })
-        // Sort descending
-        const sorted = Object.entries(counts)
-          .map(([name, count]) => ({ name, count }))
-          .sort((a, b) => b.count - a.count)
+        // Sort: count desc, then itemSum asc (lower sum = submitted earlier = ranks higher)
+        const sorted = Object.entries(stats)
+          .map(([name, s]) => ({ name, count: s.count, itemSum: s.itemSum }))
+          .sort((a, b) => b.count - a.count || a.itemSum - b.itemSum)
         setLeaders(sorted)
       }
     } catch (err) {
@@ -91,33 +95,15 @@ export default function LeaderboardPage() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <svg
-              className="h-8 w-8 animate-spin text-primary"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-          </div>
-        ) : leaders.length === 0 ? (
+        {loading && <LoadingOverlay />}
+
+        {!loading && leaders.length === 0 && (
           <div className="rounded-2xl border border-foreground/[0.08] bg-card/40 p-12 text-center backdrop-blur-xl">
             <p className="text-muted-foreground">目前還沒有提案紀錄</p>
           </div>
-        ) : (
+        )}
+
+        {!loading && leaders.length > 0 && (
           <>
             {/* Olympic Podium */}
             <div className="mb-10 rounded-2xl border border-foreground/[0.08] bg-card/40 p-8 backdrop-blur-xl">
