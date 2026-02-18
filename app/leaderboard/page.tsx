@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, Crown, Trophy, Medal } from "lucide-react"
 import AiBackground from "@/components/ai-background"
 import LoadingOverlay from "@/components/loading-overlay"
+import Confetti from "@/components/confetti"
 
 interface LeaderboardEntry {
   name: string
@@ -15,6 +16,7 @@ interface LeaderboardEntry {
 export default function LeaderboardPage() {
   const [leaders, setLeaders] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
+  const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
     fetchLeaderboard()
@@ -41,6 +43,7 @@ export default function LeaderboardPage() {
           .map(([name, s]) => ({ name, count: s.count, itemSum: s.itemSum }))
           .sort((a, b) => b.count - a.count || a.itemSum - b.itemSum)
         setLeaders(sorted)
+        if (sorted.length > 0) setShowConfetti(true)
       }
     } catch (err) {
       console.error("Failed to fetch leaderboard:", err)
@@ -71,6 +74,7 @@ export default function LeaderboardPage() {
   return (
     <main className="relative flex min-h-screen flex-col items-center px-4 py-12">
       <AiBackground />
+      {showConfetti && <Confetti />}
 
       <div className="relative z-10 w-full max-w-2xl">
         {/* Back button */}
