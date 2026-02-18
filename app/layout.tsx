@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'AI Proposal System',
+  title: 'Judge AI Proposal System',
   description: 'Submit your proposals powered by advanced AI intelligence',
 }
 
