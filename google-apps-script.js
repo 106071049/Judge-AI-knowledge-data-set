@@ -31,19 +31,22 @@ function doPost(e) {
       sheet.appendRow(["項次", "提案人員", "提案問題", "期望得到的答覆", "提案日期"]);
     }
 
-    // 自動計算項次 (最後一列行號 - 表頭行 = 目前筆數，+1 = 新項次)
-    var itemNumber = sheet.getLastRow();
+    // 支援批次送出 (rows 陣列) 或單筆送出 (向下相容)
+    var items = data.rows || [data];
 
-    sheet.appendRow([
-      itemNumber,
-      data.proposer,
-      data.question,
-      data.expectedResponse,
-      data.date,
-    ]);
+    for (var i = 0; i < items.length; i++) {
+      var itemNumber = sheet.getLastRow();
+      sheet.appendRow([
+        itemNumber,
+        items[i].proposer,
+        items[i].question,
+        items[i].expectedResponse,
+        items[i].date,
+      ]);
+    }
 
     return ContentService.createTextOutput(
-      JSON.stringify({ success: true })
+      JSON.stringify({ success: true, count: items.length })
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(
