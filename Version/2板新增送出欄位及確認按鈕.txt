@@ -1,0 +1,10 @@
+已成功更新部署作業。
+2 版 (2026年2月18日下午6:16)
+部署作業 ID
+AKfycbyttyY5F_fcg0F61R9RjKVlnallOhXBkc8Y32nGTcVbxj4wvNzeyuo80DbIrh2cuYPo
+網頁應用程式
+網址
+https://script.google.com/macros/s/AKfycbyttyY5F_fcg0F61R9RjKVlnallOhXBkc8Y32nGTcVbxj4wvNzeyuo80DbIrh2cuYPo/exec
+資料庫
+網址
+https://script.google.com/macros/library/d/1K-SioCjh_yRrgkj1OvQsUTyD6604q3FmktbD0pTPq3wgvbB_x-viBwkF/2

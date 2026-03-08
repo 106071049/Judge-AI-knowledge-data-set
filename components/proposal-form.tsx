@@ -168,7 +168,7 @@ export default function ProposalForm() {
           {/* Expected Response */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-foreground/80 tracking-wide">
-              期望得到的答覆
+              期望得到的答覆或系統面的解決方案
             </label>
             <textarea
               required
